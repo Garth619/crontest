@@ -100,7 +100,7 @@ foreach ( $outputs as $output ) {
 
 // bring post_id, and meta_id
 
-$sql = "UPDATE wp_postmeta SET  meta_value='g$' WHERE meta_id=32 AND meta_key='latitude' AND post_id='13'";
+$sql = "UPDATE wp_postmeta SET  meta_value='g$$$' WHERE meta_id=32 AND meta_key='latitude' AND post_id='13'";
 
 if ($conn->query($sql) === TRUE) {
     echo "Record updated successfully";
