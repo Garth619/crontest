@@ -75,7 +75,9 @@ $outputs= json_decode($result);
 
 $outputs = (Array) $outputs; // already in an array here so try to chery pick from here instead of foreach below maybe? and also order by post id or something so they go back to the right places in db
 
-foreach ( $outputs as $output ) {
+
+
+foreach ( $outputs as $output ) { // testing onscreen
 			
 	$latitude = $output->latitude;
 	$longitude = $output->longitude;		
@@ -83,15 +85,54 @@ foreach ( $outputs as $output ) {
 	$locality = $output->locality;
 	$region = $output->region;
 	
+
 	echo $street_address."<br/>";
 	echo $locality."<br/>";
 	echo $region."<br/>";
 	echo $latitude.", ";
-	echo $longitude."<br/><br/>";		
+	echo $longitude."<br/><br/>";	
+
 	
 								
 }
 
+$latitude = array();
+$longitude = array();
+$street_address = array();
+$locality = array(); // these will be consolodated as bits of the mysql command below, i.e. meta_values, post_ids
+$region = array();
+
+foreach ( $outputs as $output ) {
+			
+	$latitude[] = $output->latitude;
+	$longitude[] = $output->longitude;		
+	$street_address[] = $output->street_address;
+	$locality[] = $output->locality;
+	$region[] = $output->region;
+	
+/*
+	echo $street_address."<br/>";
+	echo $locality."<br/>";
+	echo $region."<br/>";
+	echo $latitude.", ";
+	echo $longitude."<br/><br/>";	
+*/	
+	
+								
+}
+
+
+$latitudeud = join(', ', $latitude);
+$longitudeud = join(', ', $longitude);
+$street_addressud = join(', ', $street_address);
+$localityud = join(', ', $locality);
+$regionud = join(', ', $region);
+
+echo $latitudeud."<br/><br/>";
+echo $longitudeud."<br/><br/>";
+echo $street_addressud."<br/><br/>";
+echo $localityud."<br/><br/>";
+echo $regionud."<br/><br/>";
 
 // i could proably start with major cites with specific terms if the queries dont get too slow... at least for la, that way I could test one majr city and show results for an example
 
@@ -100,7 +141,9 @@ foreach ( $outputs as $output ) {
 
 // bring post_id, and meta_id
 
-$sql = "UPDATE wp_postmeta SET  meta_value='g$$$' WHERE meta_id=32 AND meta_key='latitude' AND post_id='13'";
+// this either goes in array or implode array results below, also make this a prepared statement so its faster do the two selects up above need to be prepared too? or just update
+
+$sql = "UPDATE wp_postmeta SET meta_value='g$$$' WHERE meta_id=32 AND meta_key='latitude' AND post_id='13'";
 
 if ($conn->query($sql) === TRUE) {
     echo "Record updated successfully";
